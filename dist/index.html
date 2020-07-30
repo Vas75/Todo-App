@@ -7,9 +7,57 @@
       src="https://kit.fontawesome.com/d6cbb0e3a3.js"
       crossorigin="anonymous"
     ></script>
+    <link rel="stylesheet" href="style.css" />
     <title>Todo App</title>
   </head>
   <body>
+    <header>
+      <h1 class="page-title">big todo list</h1>
+    </header>
+    <div class="wrapper">
+      <div class="projects">
+        <h1 class="projects-section-title">Projects</h1>
+        <label for="add-project-input">
+          project title
+          <input
+            type="text"
+            name="add-project-input"
+            placeholder="project name..."
+            id="add-project-input"
+          />
+        </label>
+        <button class="add-project-btn" id="add-project-btn">
+          add project
+        </button>
+        <div class="projects-container" id="projects-container">
+          <!--projects listed here-->
+        </div>
+      </div>
+
+      <div class="todos">
+        <h1 class="todos-section-title">Current Project Name</h1>
+        <form class="add-todo-form">
+          <label for="todo-title">
+            title
+            <input type="text" name="todo-title" id="todo-title" />
+          </label>
+          <label for="due-date">
+            due
+            <input type="date" name="due-date" id="due-date" />
+          </label>
+          <label for="todo-priority-select">
+            priority
+            <select name="todo-priority-select" id="todo-priority-select">
+              <option value="high">high</option>
+              <option value="medium">medium</option>
+              <option value="">low</option>
+            </select>
+          </label>
+          <button type="submit">add todo</button>
+        </form>
+        <div class="todos-container" id="todos-container">todos go here</div>
+      </div>
+    </div>
     <script src="main.js"></script>
   </body>
 </html>
