@@ -1,34 +1,53 @@
 const projectsContainer = document.getElementById("projects-container");
-let Projects = [{ title: "general", todos: [] }];
+const projectInput = document.getElementById("add-project-input");
 
-//handles process of adding new project
-function handleNewProject() {
-  const projectInput = document.getElementById("add-project-input").value;
-  const newProjectInstance = getProjectObj(projectInput);
-  Projects = [...Projects, newProjectInstance];
+//below Project will get localstorage if present or general obj, general on first page load"
+const Projects = [{ title: "general", todos: [] }];
 
-  clearProjectsContainer();
-  renderProjects();
+//reference to project todos currently working with, defaults to first Project on array, changes on project dom click
+let currentTodosArray = Projects[0].todos;
+
+//handles process of adding new projects
+function handleNewProject(projectName) {
+  const newProjectInstance = getProjectObj(projectName);
+  Projects.push(newProjectInstance);
+
+  renderSingleProject(projectName, Projects.length - 1);
 }
 
-function getProjectObj(projectInput) {
-  const projectInstance = new Project(projectInput);
+//handles selection of specific project
+function handleProjectSelection(id) {
+  styleProjectDivs(id);
+}
+
+function getProjectObj(projectName) {
+  const projectInstance = new Project(projectName);
   return projectInstance;
 }
 
 //eventlisteners//
 const addProjectBtn = document.getElementById("add-project-btn");
-addProjectBtn.addEventListener("click", handleNewProject);
+addProjectBtn.addEventListener("click", () => {
+  if (projectInput.value) {
+    handleNewProject(projectInput.value);
+  }
+});
 
 projectsContainer.addEventListener("click", (e) => {
   if (e.target.classList.contains("projects-div")) {
     const id = e.target.id;
-    console.log(id);
+    handleProjectSelection(id);
   }
 });
 
 renderProjects();
+//todo: need to invoke to render currently selected todos. Why id I write this?
 
-import { renderProjects, clearProjectsContainer } from "./dom-module.js";
+import {
+  renderProjects,
+  renderSingleProject,
+  clearProjectsContainer,
+  styleProjectDivs,
+} from "./dom-module.js";
 import { Project } from "./new-project-class.js";
 export { Projects, projectsContainer };
