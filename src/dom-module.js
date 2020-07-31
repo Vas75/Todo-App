@@ -1,51 +1,27 @@
-function renderProjects() {
-  //projectsContainer.innerHTML = ""; this cant work from here, because modules in strict?
-  Projects.forEach((project, index) => {
-    const { title } = project;
-    const projectDiv = makeProjectDiv(title, index);
-    projectsContainer.appendChild(projectDiv);
-  });
-}
-
-function renderSingleProject(projectName, index) {
+function renderSingleProject(projectName, isSelected, index) {
   const projectDiv = makeProjectDiv(projectName, index);
+
+  const classes = isSelected
+    ? ["projects-div", "selected-project"]
+    : ["projects-div"];
+
+  projectDiv.classList.add(...classes);
   projectsContainer.appendChild(projectDiv);
 }
 
 function makeProjectDiv(title, index) {
   const div = document.createElement("div");
-  div.classList.add("projects-div");
   div.id = index;
   div.textContent = title;
   return div;
 }
 
-//needed to clear projects before rerendering with new project
+//not used at moment, but could come in handy later, keep...for now.
 function clearProjectsContainer() {
   while (projectsContainer.firstElementChild) {
     projectsContainer.removeChild(projectsContainer.firstElementChild);
   }
 }
 
-//applys styles to selected project div, removes from others
-function styleProjectDivs(id) {
-  const nodes = projectsContainer.querySelectorAll("div");
-
-  nodes.forEach((node, index) => {
-    const parsedID = parseInt(id);
-    if (parsedID === index) {
-      node.classList.add("selected-project");
-    } else {
-      node.classList.remove("selected-project");
-    }
-  }); //this is not working dont know why! Answer: I was comparing string to number type.
-}
-
 import { Projects, projectsContainer } from "./index.js";
-export {
-  renderProjects,
-  makeProjectDiv,
-  clearProjectsContainer,
-  styleProjectDivs,
-  renderSingleProject,
-};
+export { makeProjectDiv, clearProjectsContainer, renderSingleProject };
