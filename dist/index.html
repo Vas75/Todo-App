@@ -36,7 +36,7 @@
 
       <div class="todos">
         <h1 class="todos-section-title">Current Project Name</h1>
-        <form class="add-todo-form">
+        <form class="add-todo-form" id="add-todo-form">
           <label for="todo-title">
             title
             <input type="text" name="todo-title" id="todo-title" />
@@ -52,6 +52,15 @@
               <option value="medium">medium</option>
               <option value="">low</option>
             </select>
+          </label>
+          <label for="todo-text">
+            Notes
+            <textarea
+              name="todo-text"
+              id="todo-text"
+              cols="30"
+              rows="10"
+            ></textarea>
           </label>
           <button type="submit">add todo</button>
         </form>
