@@ -31,25 +31,31 @@ function renderAllTodos(todosArr) {
   clearContainer(todosContainer);
 
   todosArr.forEach((todo, index) => {
-    const todoTitle = todo.title;
+    const { title, dueDate, description, isComplete } = todo;
 
-    const todoDiv = makeTodoDiv(todoTitle);
-    todoDiv.innerHTML = getTodoInnerHTML(todo, index);
+    const todoDiv = makeTodoDiv(title, isComplete);
+    todoDiv.innerHTML = getTodoInnerHTML(
+      title,
+      dueDate,
+      description,
+      isComplete,
+      index
+    );
 
     todosContainer.appendChild(todoDiv);
   });
 }
 
-function makeTodoDiv(todoTitle) {
+function makeTodoDiv(todoTitle, isComplete) {
   const div = document.createElement("div");
   div.setAttribute("data-todo-title", `${todoTitle}`);
+
+  if (isComplete) div.classList.add("todo-complete");
 
   return div;
 }
 
-//pick up below//////////////////////////////////////////////////////////////////////////////////////////
-function getTodoInnerHTML(todoInstance, index) {
-  const { title, dueDate, description, isComplete } = todoInstance;
+function getTodoInnerHTML(title, dueDate, description, isComplete, index) {
   //bottom nested div hidden default, show on click of upper nested div
 
   return `  
@@ -59,7 +65,9 @@ function getTodoInnerHTML(todoInstance, index) {
               due: ${dueDate}
               <label for="checkBox-${index}">
                 completed
-                <input type="checkbox" class="todo-checkbox" id="checkBox-${index}"> 
+                <input type="checkbox" class="todo-checkbox" id="checkBox-${index}" ${
+    isComplete ? "checked" : ""
+  }> 
               </label> 
             </div>
             <div class="todo todo-description-hidden">
@@ -82,5 +90,6 @@ export { loadAllProjects, renderAllTodos };
 //need to attach eventlistener(1 or more) to todo html, event delegation? Need to listen for click on upper todo, to show
 //lower part, and change of checkbox in upper todo, which styles todo as completed or not(change compl prop on obj too), and need to add delete btn to upper
 //todo, have to listene for that click too, need to add btn to lower todo that brings up modal/form to edit todo.
-//remember, im updating todo objs on the array, when I update by form, how do I then get that data on the todo obj? I have a funct
-//that gets array, data attribute on the outer div of todo with title, so match title of todo obj.
+
+//added logic that changes completed prop on instance when checkbox clicked, then depending on isComplete styleing changed
+//, box checked or unchecked depending on th property

@@ -70,38 +70,43 @@ function getFormData(formEl) {
     return data;
   }, []);
 }
-
+//handles various events on DOM todos
 function handleTodoEvents(targetEl) {
   //needed to get index of data attr. of containing div, index matches index of project instance
   const todoTitle = targetEl.closest("div[data-todo-title]").dataset.todoTitle;
 
+  //this may go in dom mod, and may need to be broken into multi functs
   if (targetEl.classList.contains("todo-upper")) {
     targetEl.nextElementSibling.classList.toggle("todo-description-show");
   } else if (targetEl.classList.contains("todo-edit-btn")) {
-    console.log("edit button was clicked");
+    //could delete the todo, create new and place at same index, pick up here.............................
   } else if (targetEl.classList.contains("todo-checkbox")) {
-    console.log("checkbox was changed");
+    toggleIsCompleteOnTodoInstance(todoTitle);
+    renderAllTodos(getSelectedProjectsTodos());
   } else if (targetEl.classList.contains("todo-delete-btn")) {
     deleteTodoInstance(todoTitle);
+    renderAllTodos(getSelectedProjectsTodos());
   }
 }
 
 function deleteTodoInstance(todoTitle) {
-  let currTodos = getSelectedProjectsTodos();
+  const currTodos = getSelectedProjectsTodos();
 
   currTodos.forEach((todo, index) => {
     if (todo.title === todoTitle) {
       currTodos.splice(index, 1);
     }
   });
+}
 
-  renderAllTodos(currTodos);
-  /*could not assign new array to let currTodos, you ass new array to variable, not to area in memory where the
-    original array is, was not changing the objects on the original array, used splice to mutate the array in place,
-    this way, currTodos is still a reference to the original array.
-    currTodos = currTodos.filter((todo) => {
-    return todoTitle !== todo.title;
-   });*/
+function toggleIsCompleteOnTodoInstance(todoTitle) {
+  const currTodos = getSelectedProjectsTodos();
+
+  currTodos.forEach((todo) => {
+    if (todo.title === todoTitle) {
+      todo.isComplete = !todo.isComplete;
+    }
+  });
 }
 
 /////eventlisteners///////
@@ -129,8 +134,7 @@ addTodoForm.addEventListener("submit", (e) => {
 
 //using event delegation
 todosContainer.addEventListener("click", (e) => {
-  const el = e.target;
-  handleTodoEvents(el);
+  handleTodoEvents(e.target);
 });
 
 loadAllProjects();
@@ -150,4 +154,14 @@ export { Projects, projectsContainer, todosContainer };
  *
  *
  * handle updating todo by deleting the todo obj and making another todo inst, and assgining it to the index of prev?
+ *
+ * handler taking care of complex steps, each helper does very specific task, call follow functions in handler,
+ * trying to keep knowledge of objects in specific functions, passing needed data from the objects.
+ */
+/*
+ Current problems, working on making todo in dom complete and incomplete, got logic to change obj isComplete property to true
+ or false, then Im rerendering but that makes the checkbox unchecked, maybe needs to render from start checked/or unchecked
+ depending on isComplete prop, also, need to work out details on styling the todo when complete, selector im using didnt 
+ work right. Need to grab what Im tying to. Maybe the todo html needs to be reexamined, yeah this might be right...
+
  */
