@@ -31,38 +31,41 @@ function renderAllTodos(todosArr) {
   clearContainer(todosContainer);
 
   todosArr.forEach((todo, index) => {
-    const todoDiv = makeTodoDiv(index);
-    todoDiv.innerHTML = getTodoHTML(todo, index);
+    const todoTitle = todo.title;
+
+    const todoDiv = makeTodoDiv(todoTitle);
+    todoDiv.innerHTML = getTodoInnerHTML(todo, index);
 
     todosContainer.appendChild(todoDiv);
   });
 }
+
+function makeTodoDiv(todoTitle) {
+  const div = document.createElement("div");
+  div.setAttribute("data-todo-title", `${todoTitle}`);
+
+  return div;
+}
+
 //pick up below//////////////////////////////////////////////////////////////////////////////////////////
-function getTodoHTML(todoInstance, index) {
+function getTodoInnerHTML(todoInstance, index) {
   const { title, dueDate, description, isComplete } = todoInstance;
   //bottom nested div hidden default, show on click of upper nested div
 
   return `  
-            <div id="todo-upper-${index}">
+            <div class="todo todo-upper"> 
+              <button type="button" class="todo-delete-btn">delete</button>
+              ${title}, 
+              due: ${dueDate}
               <label for="checkBox-${index}">
                 completed
-                <input type="checkbox" id="checkBox-${index}"> 
-              </label>  
-              <h2>${title}</h2>
-              <p>${dueDate}</p>
+                <input type="checkbox" class="todo-checkbox" id="checkBox-${index}"> 
+              </label> 
             </div>
-            
-            <div class="todo-description-hidden" id="todo-description-${index}">
-              <p>${description}</p>
-              <button type="button" id="${title}-${index}" title="Click to edit todo.">edit todo</button>
+            <div class="todo todo-description-hidden">
+              ${description} <button type="button" class="todo-edit-btn" title="Click to edit todo.">edit todo</button>
             </div>            
           `;
-}
-
-function makeTodoDiv(index) {
-  const div = document.createElement("div");
-  div.id = `todo-${index}`;
-  return div;
 }
 
 //clears project/todos container of html (rendered projects/todos)
@@ -80,4 +83,4 @@ export { loadAllProjects, renderAllTodos };
 //lower part, and change of checkbox in upper todo, which styles todo as completed or not(change compl prop on obj too), and need to add delete btn to upper
 //todo, have to listene for that click too, need to add btn to lower todo that brings up modal/form to edit todo.
 //remember, im updating todo objs on the array, when I update by form, how do I then get that data on the todo obj? I have a funct
-//that gets array, but how do i indentify the todo obj that needs to be changed, id? data attribute.
+//that gets array, data attribute on the outer div of todo with title, so match title of todo obj.

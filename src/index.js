@@ -9,12 +9,7 @@ const Projects = [
   {
     title: "general",
     todos: [
-      {
-        title: "dummy todo",
-        dueDate: "12/18/1975",
-        priority: "high",
-        description: "Just dummy todo.",
-      },
+      /*todo instances go here */
     ],
     selected: true,
   },
@@ -65,6 +60,7 @@ function handleNewTodo(e) {
   renderAllTodos(currArr);
 }
 
+//retrieve form data for creating/updating todos
 function getFormData(formEl) {
   return [...formEl].reduce((data, formEl) => {
     const tag = formEl.tagName;
@@ -73,6 +69,39 @@ function getFormData(formEl) {
     }
     return data;
   }, []);
+}
+
+function handleTodoEvents(targetEl) {
+  //needed to get index of data attr. of containing div, index matches index of project instance
+  const todoTitle = targetEl.closest("div[data-todo-title]").dataset.todoTitle;
+
+  if (targetEl.classList.contains("todo-upper")) {
+    targetEl.nextElementSibling.classList.toggle("todo-description-show");
+  } else if (targetEl.classList.contains("todo-edit-btn")) {
+    console.log("edit button was clicked");
+  } else if (targetEl.classList.contains("todo-checkbox")) {
+    console.log("checkbox was changed");
+  } else if (targetEl.classList.contains("todo-delete-btn")) {
+    deleteTodoInstance(todoTitle);
+  }
+}
+
+function deleteTodoInstance(todoTitle) {
+  let currTodos = getSelectedProjectsTodos();
+
+  currTodos.forEach((todo, index) => {
+    if (todo.title === todoTitle) {
+      currTodos.splice(index, 1);
+    }
+  });
+
+  renderAllTodos(currTodos);
+  /*could not assign new array to let currTodos, you ass new array to variable, not to area in memory where the
+    original array is, was not changing the objects on the original array, used splice to mutate the array in place,
+    this way, currTodos is still a reference to the original array.
+    currTodos = currTodos.filter((todo) => {
+    return todoTitle !== todo.title;
+   });*/
 }
 
 /////eventlisteners///////
@@ -92,11 +121,17 @@ projectsContainer.addEventListener("click", (e) => {
 
 addTodoForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  handleNewTodo(e);
+  if (e.target.querySelector("#todo-title").value) {
+    handleNewTodo(e);
+  }
   e.target.reset();
 });
 
-todosContainer.addEventListener("click", (e) => {});
+//using event delegation
+todosContainer.addEventListener("click", (e) => {
+  const el = e.target;
+  handleTodoEvents(el);
+});
 
 loadAllProjects();
 renderAllTodos(getSelectedProjectsTodos());
@@ -113,4 +148,6 @@ export { Projects, projectsContainer, todosContainer };
  * Im able to grab selected projects todos array and add todos to array with the form. May come up with functs to render the todos
  * to the browser. A lot more to go, but making slow progress.
  *
+ *
+ * handle updating todo by deleting the todo obj and making another todo inst, and assgining it to the index of prev?
  */

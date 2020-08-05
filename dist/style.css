@@ -77,10 +77,24 @@ body {
   flex-direction: column;
 }
 
+.todo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  margin: 5px 0;
+  background-color: lightgray;
+}
+
+.todo-upper {
+}
+
 .todo-description-hidden {
   display: none;
 }
 
 .todo-description-show {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
