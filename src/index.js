@@ -2,24 +2,27 @@ const projectsContainer = document.getElementById("projects-container");
 const projectInput = document.getElementById("add-project-input");
 const todosContainer = document.getElementById("todos-container");
 const addTodoForm = document.getElementById("add-todo-form");
+const editModal = document.getElementById("edit-modal");
+const editTodoForm = document.getElementById("edit-todo-form");
 
 //below Project will get localstorage if present or general obj, general on first page load"
 //the general project may need to be dynamic, wont have any getter/setter if not instance of Project.
+//wont have methods of class instances either!!!!!!! Currently no methods on Project class.
 const Projects = [
-  {
-    title: "general",
-    todos: [
-      /*todo instances go here */
-    ],
-    selected: true,
-  },
+  // {
+  //   title: "general",
+  //   todos: [
+  //     /*todo instances go here */
+  //   ],
+  //   selected: true,
+  // },
 ];
 
 //handles process of adding new projects
 function addNewProjectObj(projectTitle) {
   const project = getProjectObj(projectTitle);
   Projects.push(project);
-  //passing index of last obj, makes selected, so new prj will be selected, select styles added to it, and removed from other.
+  //passing index of last obj, makes selected, so added prj will be selected, select styles added to it, and removed from other.
   handleProjectSelection(Projects.length - 1);
 }
 
@@ -55,31 +58,21 @@ function handleNewTodo(e) {
   const formDataArr = getFormData(e.target);
   const todoInstance = new Todo(...formDataArr);
 
-  const currArr = getSelectedProjectsTodos();
-  currArr.push(todoInstance);
-  renderAllTodos(currArr);
+  const currTodoArr = getSelectedProjectsTodos();
+  currTodoArr.push(todoInstance);
+  renderAllTodos(currTodoArr);
 }
 
-//retrieve form data for creating/updating todos
-function getFormData(formEl) {
-  return [...formEl].reduce((data, formEl) => {
-    const tag = formEl.tagName;
-    if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA") {
-      return (data = [...data, formEl.value]);
-    }
-    return data;
-  }, []);
-}
 //handles various events on DOM todos
 function handleTodoEvents(targetEl) {
-  //needed to get index of data attr. of containing div, index matches index of project instance
   const todoTitle = targetEl.closest("div[data-todo-title]").dataset.todoTitle;
 
-  //this may go in dom mod, and may need to be broken into multi functs
   if (targetEl.classList.contains("todo-upper")) {
-    targetEl.nextElementSibling.classList.toggle("todo-description-show");
+    showTodoDescription(targetEl.nextElementSibling);
   } else if (targetEl.classList.contains("todo-edit-btn")) {
-    //could delete the todo, create new and place at same index, pick up here.............................
+    //below needed to associate edit form with current todo
+    updateFormDataAttribute(todoTitle);
+    toggleEditModal();
   } else if (targetEl.classList.contains("todo-checkbox")) {
     toggleIsCompleteOnTodoInstance(todoTitle);
     renderAllTodos(getSelectedProjectsTodos());
@@ -87,6 +80,18 @@ function handleTodoEvents(targetEl) {
     deleteTodoInstance(todoTitle);
     renderAllTodos(getSelectedProjectsTodos());
   }
+}
+//how do i get the correct todos inst, my code doest have title here of todo here! On click of todo element, give inst a
+//prop value of selected = true? so much work there, but dont have another idea yet.
+function handleTodoEdit(e) {
+  const editForm = e.target;
+  const editData = getFormData(editForm);
+  const formDataSetValue = editForm.dataset.title;
+  //todoInstance ref to active todo obj//
+  const todoInstance = getActiveTodoObj(formDataSetValue);
+  //invoking method on Todo instance
+  todoInstance.updateTodo(...editData);
+  renderAllTodos(getSelectedProjectsTodos());
 }
 
 function deleteTodoInstance(todoTitle) {
@@ -98,7 +103,7 @@ function deleteTodoInstance(todoTitle) {
     }
   });
 }
-
+//needed to change value of todo property on user check mark
 function toggleIsCompleteOnTodoInstance(todoTitle) {
   const currTodos = getSelectedProjectsTodos();
 
@@ -107,6 +112,16 @@ function toggleIsCompleteOnTodoInstance(todoTitle) {
       todo.isComplete = !todo.isComplete;
     }
   });
+}
+
+function getActiveTodoObj(formDatasetValue) {
+  const currTodos = getSelectedProjectsTodos();
+
+  for (let todoObj of currTodos) {
+    if (todoObj.title === formDatasetValue) {
+      return todoObj;
+    }
+  }
 }
 
 /////eventlisteners///////
@@ -126,24 +141,53 @@ projectsContainer.addEventListener("click", (e) => {
 
 addTodoForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  if (e.target.querySelector("#todo-title").value) {
+  const todoTitle = e.target.querySelector("#todo-title").value;
+
+  if (todoTitle) {
     handleNewTodo(e);
   }
   e.target.reset();
 });
 
-//using event delegation
+//using event delegation, listening for various events in todo
 todosContainer.addEventListener("click", (e) => {
   handleTodoEvents(e.target);
 });
 
+editTodoForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  handleTodoEdit(e);
+  toggleEditModal();
+  editTodoForm.reset();
+});
+
+//below closes edit form on click of cancel btn
+editTodoForm.querySelector("#cancel").addEventListener("click", () => {
+  toggleEditModal();
+  editTodoForm.reset();
+});
+
+//below iife run on page load, if no projects, creates default one, if one in local storage, iife does nothing.
+(function () {
+  if (Projects.length < 1) {
+    addNewProjectObj("General Todos");
+  }
+})();
 loadAllProjects();
 renderAllTodos(getSelectedProjectsTodos());
 
-import { loadAllProjects, renderAllTodos } from "./dom-module.js";
+import {
+  loadAllProjects,
+  renderAllTodos,
+  getFormData,
+  toggleEditModal,
+  showTodoDescription,
+  updateFormDataAttribute,
+} from "./dom-module.js";
 import { Project } from "./new-project-class.js";
 import { Todo } from "./new-todo-class.js";
-export { Projects, projectsContainer, todosContainer };
+
+export { Projects, projectsContainer, todosContainer, editModal, editTodoForm };
 
 /**
  * Want to find way make new projects selected on creation, get styled as such, selected=true, get and display its todos.
@@ -154,14 +198,13 @@ export { Projects, projectsContainer, todosContainer };
  *
  *
  * handle updating todo by deleting the todo obj and making another todo inst, and assgining it to the index of prev?
- *
+ *No, didnt do this, trying to grab the todo inst and update it, but need some kind of selecte/active prop on it,
+ dont have the title of the todo in the update code, sheeeesh, this will take forever.
  * handler taking care of complex steps, each helper does very specific task, call follow functions in handler,
  * trying to keep knowledge of objects in specific functions, passing needed data from the objects.
  */
-/*
- Current problems, working on making todo in dom complete and incomplete, got logic to change obj isComplete property to true
- or false, then Im rerendering but that makes the checkbox unchecked, maybe needs to render from start checked/or unchecked
- depending on isComplete prop, also, need to work out details on styling the todo when complete, selector im using didnt 
- work right. Need to grab what Im tying to. Maybe the todo html needs to be reexamined, yeah this might be right...
 
+/**
+ * Should i have handler functions call functions, and they return values, then call next function in a looping pattern?
+ * Im going to rememeber this, maybe a step in the right direction.
  */

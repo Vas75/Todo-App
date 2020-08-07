@@ -56,6 +56,9 @@ body {
 }
 
 .projects-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin: 5px 0;
   background-color: rgba(255, 0, 0, 0.5);
 }
@@ -101,4 +104,27 @@ body {
 
 .todo-complete > .todo-upper {
   background-color: rgba(255, 0, 0, 0.5);
+}
+
+div.edit-modal {
+  position: fixed;
+  /*display none default, display flex to show modal*/
+  display: none;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(50, 50, 50, 0.6);
+}
+
+div.edit-modal.show {
+  display: flex;
+}
+
+form.edit-todo-form {
+  display: flex;
+  flex-direction: column;
+  width: 33vw;
 }

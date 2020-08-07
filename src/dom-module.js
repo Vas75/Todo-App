@@ -24,6 +24,16 @@ function makeProjectDiv(title, index) {
   const div = document.createElement("div");
   div.id = index;
   div.textContent = title;
+
+  function makeDeleteBtn(index) {
+    const deleteBtn = document.createElement("button");
+    deleteBtn.setAttribute("data-index", `${index}`);
+    deleteBtn.textContent = "delete project";
+    return deleteBtn;
+  }
+
+  div.appendChild(makeDeleteBtn(index));
+
   return div;
 }
 
@@ -61,8 +71,7 @@ function getTodoInnerHTML(title, dueDate, description, isComplete, index) {
   return `  
             <div class="todo todo-upper"> 
               <button type="button" class="todo-delete-btn">delete</button>
-              ${title}, 
-              due: ${dueDate}
+              ${title} (Due, ${dueDate}.)
               <label for="checkBox-${index}">
                 completed
                 <input type="checkbox" class="todo-checkbox" id="checkBox-${index}" ${
@@ -76,6 +85,35 @@ function getTodoInnerHTML(title, dueDate, description, isComplete, index) {
           `;
 }
 
+//retrieve form data for creating/updating todos
+function getFormData(formEl) {
+  return [...formEl].reduce((data, formEl) => {
+    const tag = formEl.tagName;
+    if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA") {
+      return (data = [...data, formEl.value]);
+    }
+    return data;
+  }, []);
+}
+
+function showTodoDescription(containerDiv) {
+  containerDiv.classList.toggle("todo-description-show");
+}
+
+function toggleEditModal() {
+  const hasShowClass = editModal.classList.contains("show");
+
+  if (hasShowClass) {
+    editModal.classList.remove("show");
+    return;
+  }
+  editModal.classList.add("show");
+}
+
+function updateFormDataAttribute(tudoTitle) {
+  editTodoForm.setAttribute("data-title", `${tudoTitle}`);
+}
+
 //clears project/todos container of html (rendered projects/todos)
 function clearContainer(container) {
   while (container.firstElementChild) {
@@ -83,8 +121,22 @@ function clearContainer(container) {
   }
 }
 
-import { Projects, projectsContainer, todosContainer } from "./index.js";
-export { loadAllProjects, renderAllTodos };
+import {
+  Projects,
+  projectsContainer,
+  todosContainer,
+  editModal,
+  editTodoForm,
+} from "./index.js";
+
+export {
+  loadAllProjects,
+  renderAllTodos,
+  getFormData,
+  toggleEditModal,
+  showTodoDescription,
+  updateFormDataAttribute,
+};
 
 //add styles to todo element on click, no default, so dont have to worry about style on page load
 //need to attach eventlistener(1 or more) to todo html, event delegation? Need to listen for click on upper todo, to show

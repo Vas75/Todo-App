@@ -70,6 +70,42 @@
         </div>
       </div>
     </div>
+    <!--edit todo modal, hidded until edit btn clicked-->
+    <div class="edit-modal" id="edit-modal">
+      <form class="edit-todo-form" id="edit-todo-form">
+        <label for="edit-todo-title">
+          title
+          <input type="text" name="edit-todo-title" id="edit-todo-title" />
+        </label>
+        <label for="edit-due-date">
+          due
+          <input type="date" name="edit-due-date" id="edit-due-date" />
+        </label>
+        <label for="edit-todo-priority-select">
+          priority
+          <select
+            name="edit-todo-priority-select"
+            id="edit-todo-priority-select"
+          >
+            <option value="high">high</option>
+            <option value="medium">medium</option>
+            <option value="low">low</option>
+          </select>
+        </label>
+        <label for="edit-todo-text">
+          Notes
+          <textarea
+            name="edit-todo-text"
+            id="edit-todo-text"
+            cols="30"
+            rows="10"
+          ></textarea>
+        </label>
+        <button type="submit">edit todo</button>
+        <button type="button" id="cancel">cancel</button>
+      </form>
+    </div>
+
     <script src="main.js"></script>
   </body>
 </html>
