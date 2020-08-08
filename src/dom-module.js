@@ -37,6 +37,16 @@ function makeProjectDiv(title, index) {
   return div;
 }
 
+function getSelectedProjectTitle() {
+  return Projects.reduce((title, project) => {
+    return (title = project.selected ? project.title : title);
+  }, "");
+}
+
+function displayProjectTitle(title) {
+  projectTitleHeading.textContent = title;
+}
+
 function renderAllTodos(todosArr) {
   clearContainer(todosContainer);
 
@@ -71,7 +81,7 @@ function getTodoInnerHTML(title, dueDate, description, isComplete, index) {
   return `  
             <div class="todo todo-upper"> 
               <button type="button" class="todo-delete-btn">delete</button>
-              ${title} (Due, ${dueDate}.)
+              ${title} (Due: ${dueDate}.)
               <label for="checkBox-${index}">
                 completed
                 <input type="checkbox" class="todo-checkbox" id="checkBox-${index}" ${
@@ -80,7 +90,7 @@ function getTodoInnerHTML(title, dueDate, description, isComplete, index) {
               </label> 
             </div>
             <div class="todo todo-description-hidden">
-              ${description} <button type="button" class="todo-edit-btn" title="Click to edit todo.">edit todo</button>
+              <p>${description}</p> <button type="button" class="todo-edit-btn" title="Click to edit todo.">edit todo</button>
             </div>            
           `;
 }
@@ -124,6 +134,7 @@ function clearContainer(container) {
 import {
   Projects,
   projectsContainer,
+  projectTitleHeading,
   todosContainer,
   editModal,
   editTodoForm,
@@ -136,6 +147,8 @@ export {
   toggleEditModal,
   showTodoDescription,
   updateFormDataAttribute,
+  getSelectedProjectTitle,
+  displayProjectTitle,
 };
 
 //add styles to todo element on click, no default, so dont have to worry about style on page load

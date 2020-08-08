@@ -42,8 +42,27 @@ body {
   height: 100vh;
 }
 
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+  padding: 10px;
+}
+
+header h1 {
+  font-size: 3rem;
+}
+
+h1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .wrapper {
   display: flex;
+  justify-content: space-evenly;
   height: 100%;
 }
 
@@ -103,7 +122,8 @@ body {
 }
 
 .todo-complete > .todo-upper {
-  background-color: rgba(255, 0, 0, 0.5);
+  background-color: rgba(225, 225, 225, 0.5);
+  color: rgba(50, 50, 50, 0.5);
 }
 
 div.edit-modal {

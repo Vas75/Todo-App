@@ -5,26 +5,18 @@ const todosContainer = document.getElementById("todos-container");
 const addTodoForm = document.getElementById("add-todo-form");
 const editModal = document.getElementById("edit-modal");
 const editTodoForm = document.getElementById("edit-todo-form");
+//const todosTitle = document.getElementById("todos-section-title");
+const projectTitleHeading = document.getElementById("project-title-container");
 
 //below Project will get localstorage if present or general obj, general on first page load"
 //the general project may need to be dynamic, wont have any getter/setter if not instance of Project.
 //wont have methods of class instances either!!!!!!! Currently no methods on Project class.
-let Projects = [
-  // {
-  //   title: "general",
-  //   todos: [
-  //     /*todo instances go here */
-  //   ],
-  //   selected: true,
-  // },
-];
+let Projects = [];
 
 //handles process of adding new projects
 function addNewProjectObj(projectTitle) {
   const project = getProjectObj(projectTitle);
   Projects.push(project);
-  //passing index of last obj, makes selected, so added prj will be selected, select styles added to it, and removed from other.
-  handleProjectSelection(Projects.length - 1);
 }
 
 //handles selection of specific project/additon of new project,
@@ -34,8 +26,10 @@ function handleProjectSelection(id) {
   loadAllProjects();
   //load selected projects todos
   renderAllTodos(getSelectedProjectsTodos());
+  //get and display selected project title
+  displayProjectTitle(getSelectedProjectTitle());
 }
-//start here, got to work out steps for the deletion of a project
+
 function handleProjectDeletion(dataSetValue) {
   const parsedNum = parseInt(dataSetValue);
   Projects = getFilteredProjects(parsedNum);
@@ -49,6 +43,9 @@ function handleProjectDeletion(dataSetValue) {
 
   loadAllProjects();
   renderAllTodos(getSelectedProjectsTodos());
+
+  //get and display selected project title
+  displayProjectTitle(getSelectedProjectTitle());
 }
 
 function getProjectObj(projectName) {
@@ -127,6 +124,7 @@ function deleteTodoInstance(todoTitle) {
     }
   });
 }
+
 //needed to change value of todo property on user check mark
 function toggleIsCompleteOnTodoInstance(todoTitle) {
   const currTodos = getSelectedProjectsTodos();
@@ -160,6 +158,9 @@ function isTodoUnique(newTodoTitle) {
 addProjectBtn.addEventListener("click", () => {
   if (projectInput.value) {
     addNewProjectObj(projectInput.value);
+    projectInput.value = "";
+    //below args are index of last project, and its title
+    handleProjectSelection(Projects.length - 1);
   }
 });
 
@@ -202,15 +203,19 @@ editTodoForm.querySelector("#cancel").addEventListener("click", () => {
   editTodoForm.reset();
 });
 
-//below iife run on page load, if no projects, creates default one, if one in local storage, iife does nothing.
+//below iife run on page load, if no projects, creates default one, if one in local storage, iife does nothing.//
 (function () {
   if (Projects.length < 1) {
     addNewProjectObj("General Todos");
+    //below will make first project selected on page load
+    handleProjectSelection(Projects.length - 1);
   }
 })();
+
 loadAllProjects();
 renderAllTodos(getSelectedProjectsTodos());
 
+//imported/exported//////////////////
 import {
   loadAllProjects,
   renderAllTodos,
@@ -218,11 +223,20 @@ import {
   toggleEditModal,
   showTodoDescription,
   updateFormDataAttribute,
+  getSelectedProjectTitle,
+  displayProjectTitle,
 } from "./dom-module.js";
 import { Project } from "./new-project-class.js";
 import { Todo } from "./new-todo-class.js";
 
-export { Projects, projectsContainer, todosContainer, editModal, editTodoForm };
+export {
+  Projects,
+  projectsContainer,
+  todosContainer,
+  editModal,
+  editTodoForm,
+  projectTitleHeading,
+};
 
 /**
  * Want to find way make new projects selected on creation, get styled as such, selected=true, get and display its todos.
@@ -247,4 +261,8 @@ export { Projects, projectsContainer, todosContainer, editModal, editTodoForm };
 /**
  * Note: could have created a function that looped through array of project obj, and then looped through object,
  * then looped through array of todos, may have been useful.
+ *
+ * Should have made better use of methods on classes, project instances could have had methods for todo array manipulation?
  */
+
+//next up, want todo container to have title of selected project, getter/setter for dates, add icons, css work.
