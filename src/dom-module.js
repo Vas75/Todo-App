@@ -28,12 +28,12 @@ function makeProjectDiv(title, index) {
   function makeDeleteBtn(index) {
     const deleteBtn = document.createElement("button");
     deleteBtn.setAttribute("data-index", `${index}`);
+    deleteBtn.setAttribute("type", "button");
     deleteBtn.textContent = "delete project";
     return deleteBtn;
   }
 
   div.appendChild(makeDeleteBtn(index));
-
   return div;
 }
 

@@ -1,4 +1,5 @@
 const projectsContainer = document.getElementById("projects-container");
+const addProjectBtn = document.getElementById("add-project-btn");
 const projectInput = document.getElementById("add-project-input");
 const todosContainer = document.getElementById("todos-container");
 const addTodoForm = document.getElementById("add-todo-form");
@@ -8,7 +9,7 @@ const editTodoForm = document.getElementById("edit-todo-form");
 //below Project will get localstorage if present or general obj, general on first page load"
 //the general project may need to be dynamic, wont have any getter/setter if not instance of Project.
 //wont have methods of class instances either!!!!!!! Currently no methods on Project class.
-const Projects = [
+let Projects = [
   // {
   //   title: "general",
   //   todos: [
@@ -34,6 +35,21 @@ function handleProjectSelection(id) {
   //load selected projects todos
   renderAllTodos(getSelectedProjectsTodos());
 }
+//start here, got to work out steps for the deletion of a project
+function handleProjectDeletion(dataSetValue) {
+  const parsedNum = parseInt(dataSetValue);
+  Projects = getFilteredProjects(parsedNum);
+
+  //needed to check if Projects array is empty, if so makes default prj,
+  if (Projects.length < 1) {
+    addNewProjectObj("General Todos");
+  }
+  //called here so on deletion of project, selected proj defaults to first proj at index 0.
+  changeSelectedProject(0);
+
+  loadAllProjects();
+  renderAllTodos(getSelectedProjectsTodos());
+}
 
 function getProjectObj(projectName) {
   const projectInstance = new Project(projectName);
@@ -54,16 +70,24 @@ function getSelectedProjectsTodos() {
   }
 }
 
-function handleNewTodo(e) {
-  const formDataArr = getFormData(e.target);
-  const todoInstance = new Todo(...formDataArr);
-
-  const currTodoArr = getSelectedProjectsTodos();
-  currTodoArr.push(todoInstance);
-  renderAllTodos(currTodoArr);
+function getFilteredProjects(num) {
+  return Projects.filter((_, index) => {
+    return !(num === index);
+  });
 }
 
-//handles various events on DOM todos
+function handleNewTodo(e) {
+  const formDataArr = getFormData(e.target);
+  const todoTitle = formDataArr[0];
+  if (isTodoUnique(todoTitle)) {
+    const todoInstance = new Todo(...formDataArr);
+    const currTodoArr = getSelectedProjectsTodos();
+    currTodoArr.push(todoInstance);
+    renderAllTodos(currTodoArr);
+  }
+}
+
+//handles various events on DOM todo elements
 function handleTodoEvents(targetEl) {
   const todoTitle = targetEl.closest("div[data-todo-title]").dataset.todoTitle;
 
@@ -124,8 +148,15 @@ function getActiveTodoObj(formDatasetValue) {
   }
 }
 
+function isTodoUnique(newTodoTitle) {
+  const currTodos = getSelectedProjectsTodos();
+  //if todo already exists with title, returns false
+  return !currTodos.some((todo) => {
+    return todo.title === newTodoTitle;
+  });
+}
+
 /////eventlisteners///////
-const addProjectBtn = document.getElementById("add-project-btn");
 addProjectBtn.addEventListener("click", () => {
   if (projectInput.value) {
     addNewProjectObj(projectInput.value);
@@ -133,9 +164,11 @@ addProjectBtn.addEventListener("click", () => {
 });
 
 projectsContainer.addEventListener("click", (e) => {
-  if (e.target.classList.contains("projects-div")) {
-    const id = e.target.id;
-    handleProjectSelection(id);
+  const el = e.target;
+  if (el.classList.contains("projects-div")) {
+    handleProjectSelection(el.id);
+  } else if (el.tagName === "BUTTON") {
+    handleProjectDeletion(el.dataset.index);
   }
 });
 
@@ -151,7 +184,9 @@ addTodoForm.addEventListener("submit", (e) => {
 
 //using event delegation, listening for various events in todo
 todosContainer.addEventListener("click", (e) => {
-  handleTodoEvents(e.target);
+  if (!(e.target.id === "todos-container")) {
+    handleTodoEvents(e.target);
+  }
 });
 
 editTodoForm.addEventListener("submit", (e) => {
@@ -207,4 +242,9 @@ export { Projects, projectsContainer, todosContainer, editModal, editTodoForm };
 /**
  * Should i have handler functions call functions, and they return values, then call next function in a looping pattern?
  * Im going to rememeber this, maybe a step in the right direction.
+ */
+
+/**
+ * Note: could have created a function that looped through array of project obj, and then looped through object,
+ * then looped through array of todos, may have been useful.
  */
