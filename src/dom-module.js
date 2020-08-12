@@ -47,16 +47,18 @@ function displayProjectTitle(title) {
   projectTitleHeading.textContent = title;
 }
 
+//obj destructing used here, note this is where we call getter on Todo class.
 function renderAllTodos(todosArr) {
   clearContainer(todosContainer);
 
   todosArr.forEach((todo, index) => {
-    const { title, dueDate, description, isComplete } = todo;
+    const { title, description, isComplete } = todo;
+    const dueDateText = todo.dueDateText;
 
     const todoDiv = makeTodoDiv(title, isComplete);
     todoDiv.innerHTML = getTodoInnerHTML(
       title,
-      dueDate,
+      dueDateText,
       description,
       isComplete,
       index
@@ -75,15 +77,14 @@ function makeTodoDiv(todoTitle, isComplete) {
   return div;
 }
 
-function getTodoInnerHTML(title, dueDate, description, isComplete, index) {
+function getTodoInnerHTML(title, dueDateText, description, isComplete, index) {
   //bottom nested div hidden default, show on click of upper nested div
-
   return `  
             <div class="todo todo-upper"> 
               <button type="button" class="todo-delete-btn">delete</button>
-              ${title} (Due: ${dueDate}.)
+              ${title} (${dueDateText})
               <label for="checkBox-${index}">
-                completed
+
                 <input type="checkbox" class="todo-checkbox" id="checkBox-${index}" ${
     isComplete ? "checked" : ""
   }> 
@@ -99,6 +100,7 @@ function getTodoInnerHTML(title, dueDate, description, isComplete, index) {
 function getFormData(formEl) {
   return [...formEl].reduce((data, formEl) => {
     const tag = formEl.tagName;
+
     if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA") {
       return (data = [...data, formEl.value]);
     }

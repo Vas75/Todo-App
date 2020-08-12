@@ -5,13 +5,19 @@ const todosContainer = document.getElementById("todos-container");
 const addTodoForm = document.getElementById("add-todo-form");
 const editModal = document.getElementById("edit-modal");
 const editTodoForm = document.getElementById("edit-todo-form");
-//const todosTitle = document.getElementById("todos-section-title");
 const projectTitleHeading = document.getElementById("project-title-container");
 
-//below Project will get localstorage if present or general obj, general on first page load"
-//the general project may need to be dynamic, wont have any getter/setter if not instance of Project.
-//wont have methods of class instances either!!!!!!! Currently no methods on Project class.
-let Projects = [];
+//below Projects will get localstorage if present or empty [] on page load.
+let Projects = getProjectsIfStored("Projects");
+
+//if no projects, creates default one, if one in local storage, iife does nothing.//
+(function addDefaultProjectIfNone() {
+  if (Projects.length < 1) {
+    addNewProjectObj("General Todos");
+    //below will make lone project selected on page load
+    handleProjectSelection(Projects.length - 1);
+  }
+})();
 
 //handles process of adding new projects
 function addNewProjectObj(projectTitle) {
@@ -28,6 +34,7 @@ function handleProjectSelection(id) {
   renderAllTodos(getSelectedProjectsTodos());
   //get and display selected project title
   displayProjectTitle(getSelectedProjectTitle());
+  storeProjectsArr("Projects");
 }
 
 function handleProjectDeletion(dataSetValue) {
@@ -40,12 +47,11 @@ function handleProjectDeletion(dataSetValue) {
   }
   //called here so on deletion of project, selected proj defaults to first proj at index 0.
   changeSelectedProject(0);
-
   loadAllProjects();
   renderAllTodos(getSelectedProjectsTodos());
-
   //get and display selected project title
   displayProjectTitle(getSelectedProjectTitle());
+  storeProjectsArr("Projects");
 }
 
 function getProjectObj(projectName) {
@@ -81,6 +87,7 @@ function handleNewTodo(e) {
     const currTodoArr = getSelectedProjectsTodos();
     currTodoArr.push(todoInstance);
     renderAllTodos(currTodoArr);
+    storeProjectsArr("Projects");
   }
 }
 
@@ -97,13 +104,14 @@ function handleTodoEvents(targetEl) {
   } else if (targetEl.classList.contains("todo-checkbox")) {
     toggleIsCompleteOnTodoInstance(todoTitle);
     renderAllTodos(getSelectedProjectsTodos());
+    storeProjectsArr("Projects");
   } else if (targetEl.classList.contains("todo-delete-btn")) {
     deleteTodoInstance(todoTitle);
     renderAllTodos(getSelectedProjectsTodos());
+    storeProjectsArr("Projects");
   }
 }
-//how do i get the correct todos inst, my code doest have title here of todo here! On click of todo element, give inst a
-//prop value of selected = true? so much work there, but dont have another idea yet.
+
 function handleTodoEdit(e) {
   const editForm = e.target;
   const editData = getFormData(editForm);
@@ -113,6 +121,7 @@ function handleTodoEdit(e) {
   //invoking method on Todo instance
   todoInstance.updateTodo(...editData);
   renderAllTodos(getSelectedProjectsTodos());
+  storeProjectsArr("Projects");
 }
 
 function deleteTodoInstance(todoTitle) {
@@ -138,7 +147,6 @@ function toggleIsCompleteOnTodoInstance(todoTitle) {
 
 function getActiveTodoObj(formDatasetValue) {
   const currTodos = getSelectedProjectsTodos();
-
   for (let todoObj of currTodos) {
     if (todoObj.title === formDatasetValue) {
       return todoObj;
@@ -146,9 +154,10 @@ function getActiveTodoObj(formDatasetValue) {
   }
 }
 
+//if todo already exists with title, returns false
 function isTodoUnique(newTodoTitle) {
   const currTodos = getSelectedProjectsTodos();
-  //if todo already exists with title, returns false
+
   return !currTodos.some((todo) => {
     return todo.title === newTodoTitle;
   });
@@ -203,17 +212,9 @@ editTodoForm.querySelector("#cancel").addEventListener("click", () => {
   editTodoForm.reset();
 });
 
-//below iife run on page load, if no projects, creates default one, if one in local storage, iife does nothing.//
-(function () {
-  if (Projects.length < 1) {
-    addNewProjectObj("General Todos");
-    //below will make first project selected on page load
-    handleProjectSelection(Projects.length - 1);
-  }
-})();
-
 loadAllProjects();
 renderAllTodos(getSelectedProjectsTodos());
+displayProjectTitle(getSelectedProjectTitle());
 
 //imported/exported//////////////////
 import {
@@ -228,6 +229,7 @@ import {
 } from "./dom-module.js";
 import { Project } from "./new-project-class.js";
 import { Todo } from "./new-todo-class.js";
+import { getProjectsIfStored, storeProjectsArr } from "./local-storage.js";
 
 export {
   Projects,
@@ -265,4 +267,4 @@ export {
  * Should have made better use of methods on classes, project instances could have had methods for todo array manipulation?
  */
 
-//next up, want todo container to have title of selected project, getter/setter for dates, add icons, css work.
+//getter/setter for dates, add icons, css work.

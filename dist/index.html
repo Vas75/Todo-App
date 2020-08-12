@@ -16,13 +16,13 @@
     </header>
     <div class="wrapper">
       <div class="projects">
-        <h1 class="projects-section-title">Projects</h1>
+        <h2 class="projects-section-title">Projects</h2>
         <label for="add-project-input">
-          project title
+          project
           <input
             type="text"
             name="add-project-input"
-            placeholder="project name..."
+            placeholder="project title..."
             id="add-project-input"
           />
         </label>
@@ -35,14 +35,19 @@
       </div>
 
       <div class="todos">
-        <h1 class="todos-section-title" id="todos-section-title">
+        <h2 class="todos-section-title" id="todos-section-title">
           <span id="project-title-container"></span>
-        </h1>
+        </h2>
 
         <form class="add-todo-form" id="add-todo-form">
           <label for="todo-title">
-            title
-            <input type="text" name="todo-title" id="todo-title" />
+            todo
+            <input
+              type="text"
+              name="todo-title"
+              id="todo-title"
+              placeholder="todo title..."
+            />
           </label>
           <label for="due-date">
             due
@@ -72,7 +77,7 @@
         </div>
       </div>
     </div>
-    <!--edit todo modal, hidded until edit btn clicked-->
+    <!--edit todo modal, hidden until edit btn clicked-->
     <div class="edit-modal" id="edit-modal">
       <form class="edit-todo-form" id="edit-todo-form">
         <label for="edit-todo-title">

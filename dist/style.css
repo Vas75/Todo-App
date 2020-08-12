@@ -37,27 +37,31 @@ img {
 /*end reset*/
 
 /*general*/
-html,
-body {
-  height: 100vh;
-}
-
 body {
   font-family: Arial, Helvetica, sans-serif;
+  background-color: #ee82ee;
 }
 
 header {
   padding: 10px;
 }
 
-header h1 {
-  font-size: 3rem;
-}
-
-h1 {
+h1,
+h2 {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 3rem;
+  color: #fff;
+}
+
+h2 {
+  font-size: 1.7rem;
+  margin-bottom: 5px;
 }
 
 .wrapper {
@@ -67,18 +71,24 @@ h1 {
 }
 
 /*projects panel*/
-.projects {
+.projects,
+.todos {
   display: flex;
   flex-direction: column;
   width: 40vw;
   margin: 10px;
+  padding: 10px;
+  border-radius: 15px;
+  background-color: rgb(255, 255, 0);
 }
 
 .projects-div {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 5px 0;
+  margin: 2px 0;
+  border-radius: 10px;
+  padding: 10px;
   background-color: rgba(255, 0, 0, 0.5);
 }
 
@@ -88,10 +98,6 @@ h1 {
 
 /*todos panel*/
 .todos {
-  display: flex;
-  flex-direction: column;
-  width: 40vw;
-  margin: 10px;
 }
 
 .add-todo-form {
@@ -103,12 +109,15 @@ h1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px;
-  margin: 5px 0;
-  background-color: lightgray;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 2px 0;
 }
 
 .todo-upper {
+  margin-bottom: 5px;
+  border-radius: 10px;
+  background-color: #ee82ee;
 }
 
 .todo-description-hidden {
@@ -147,4 +156,14 @@ form.edit-todo-form {
   display: flex;
   flex-direction: column;
   width: 33vw;
+  padding: 10px;
+  background-color: #fff;
+}
+
+button {
+  margin: 5px 0;
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ee82ee;
 }
