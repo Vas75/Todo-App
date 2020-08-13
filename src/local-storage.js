@@ -28,5 +28,3 @@ import { Projects } from "./index.js";
 import { Todo } from "./new-todo-class.js";
 import { Project } from "./new-project-class.js";
 export { getProjectsIfStored, storeProjectsArr };
-
-//need to use reviver on each obj to make part of class again?

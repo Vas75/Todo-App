@@ -55,8 +55,7 @@ function handleProjectDeletion(dataSetValue) {
 }
 
 function getProjectObj(projectName) {
-  const projectInstance = new Project(projectName);
-  return projectInstance;
+  return new Project(projectName);
 }
 
 function changeSelectedProject(id) {
@@ -106,7 +105,6 @@ function handleTodoEvents(targetEl) {
     renderAllTodos(getSelectedProjectsTodos());
     storeProjectsArr("Projects");
   } else if (targetEl.classList.contains("todo-delete-btn")) {
-    console.log("delet icon clicked");
     deleteTodoInstance(todoTitle);
     renderAllTodos(getSelectedProjectsTodos());
     storeProjectsArr("Projects");
@@ -242,20 +240,6 @@ export {
 };
 
 /**
- * Want to find way make new projects selected on creation, get styled as such, selected=true, get and display its todos.
- * Tricky.
- *
- * Im able to grab selected projects todos array and add todos to array with the form. May come up with functs to render the todos
- * to the browser. A lot more to go, but making slow progress.
- *
- *
- * handle updating todo by deleting the todo obj and making another todo inst, and assgining it to the index of prev?
- *No, didnt do this, trying to grab the todo inst and update it, but need some kind of selecte/active prop on it,
- dont have the title of the todo in the update code, sheeeesh, this will take forever.
- * handler taking care of complex steps, each helper does very specific task, call follow functions in handler,
- * trying to keep knowledge of objects in specific functions, passing needed data from the objects.
- */
-
 /**
  * Should i have handler functions call functions, and they return values, then call next function in a looping pattern?
  * Im going to rememeber this, maybe a step in the right direction.

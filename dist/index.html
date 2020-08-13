@@ -25,6 +25,7 @@
               name="add-project-input"
               placeholder="project title..."
               id="add-project-input"
+              maxlength="50"
             />
           </label>
           <button class="add-project-btn" id="add-project-btn">
@@ -47,6 +48,7 @@
                 type="text"
                 name="todo-title"
                 id="todo-title"
+                maxlength="50"
                 placeholder="todo title..."
               />
             </label>
@@ -57,9 +59,9 @@
             <label for="todo-priority-select">
               Priority:
               <select name="todo-priority-select" id="todo-priority-select">
-                <option value="high">high</option>
-                <option value="medium">medium</option>
-                <option value="low">low</option>
+                <option value="low">low (blue)</option>
+                <option value="medium">medium (purple)</option>
+                <option value="high">high (red)</option>
               </select>
             </label>
             <label for="todo-text">
@@ -83,7 +85,12 @@
         <form class="edit-todo-form" id="edit-todo-form">
           <label for="edit-todo-title">
             title
-            <input type="text" name="edit-todo-title" id="edit-todo-title" />
+            <input
+              type="text"
+              name="edit-todo-title"
+              id="edit-todo-title"
+              maxlength="50"
+            />
           </label>
           <label for="edit-due-date">
             due
@@ -95,9 +102,9 @@
               name="edit-todo-priority-select"
               id="edit-todo-priority-select"
             >
-              <option value="high">high</option>
-              <option value="medium">medium</option>
-              <option value="low">low</option>
+              <option value="low">low (blue)</option>
+              <option value="medium">medium (purple)</option>
+              <option value="high">high (red)</option>
             </select>
           </label>
           <label for="edit-todo-text">

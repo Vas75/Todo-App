@@ -48,21 +48,22 @@ function displayProjectTitle(title) {
   projectTitleHeading.textContent = title;
 }
 
-//obj destructing used here, note this is where we call getter on Todo class.
+//obj destructing used here
 function renderAllTodos(todosArr) {
   clearContainer(todosContainer);
 
   todosArr.forEach((todo, index) => {
-    const { title, description, isComplete } = todo;
+    const { title, description, isComplete, priority } = todo;
     const dueDateText = todo.dueDateText;
 
-    const todoDiv = makeTodoDiv(title, isComplete);
+    const todoDiv = makeTodoDiv(title, isComplete, priority);
     todoDiv.innerHTML = getTodoInnerHTML(
       title,
       dueDateText,
       description,
       isComplete,
-      index
+      index,
+      priority
     );
 
     todosContainer.appendChild(todoDiv);
@@ -74,24 +75,38 @@ function makeTodoDiv(todoTitle, isComplete) {
   div.setAttribute("data-todo-title", `${todoTitle}`);
 
   if (isComplete) div.classList.add("todo-complete");
-
   return div;
 }
 
-function getTodoInnerHTML(title, dueDateText, description, isComplete, index) {
+function getTodoInnerHTML(
+  title,
+  dueDateText,
+  description,
+  isComplete,
+  index,
+  priority
+) {
   //bottom nested div hidden default, show on click of upper nested div
+
+  const priorityClass =
+    priority === "high"
+      ? "todo-high-priority"
+      : priority === "medium"
+      ? "todo-medium-priority"
+      : "todo-low-priority";
+
+  const isChecked = isComplete ? "checked" : "";
+
   return `  
-            <div class="todo todo-upper clickable" title="Click to expand."> 
+            <div class="todo todo-upper clickable ${priorityClass}" title="Click to expand."> 
               <i class="far fa-trash-alt fa-2x todo-delete-btn" title="Delete todo."></i>
               ${title} (${dueDateText})
               <label for="checkBox-${index}">
-              <i class="far fa-check-circle fa-2x todo-checkbox ${
-                isComplete ? "checked" : ""
-              }" id="checkBox-${index}" title="Click to mark done."></i>
+              <i class="far fa-check-circle fa-2x todo-checkbox ${isChecked}" id="checkBox-${index}" title="Click to mark done."></i>
               </label> 
             </div>
             <div class="todo todo-description-hidden">
-              <p>${description}</p> 
+              <p class="todo-inner-text">${description}</p>
               <i class="far fa-edit fa-2x todo-edit-btn" title="Click to edit todo."></i>
             </div>            
           `;
@@ -153,20 +168,3 @@ export {
   getSelectedProjectTitle,
   displayProjectTitle,
 };
-
-//add styles to todo element on click, no default, so dont have to worry about style on page load
-//need to attach eventlistener(1 or more) to todo html, event delegation? Need to listen for click on upper todo, to show
-//lower part, and change of checkbox in upper todo, which styles todo as completed or not(change compl prop on obj too), and need to add delete btn to upper
-//todo, have to listene for that click too, need to add btn to lower todo that brings up modal/form to edit todo.
-
-//added logic that changes completed prop on instance when checkbox clicked, then depending on isComplete styleing changed
-//, box checked or unchecked depending on th property
-
-/**
- * <label for="checkBox-${index}">
-              <i class="far fa-check-circle fa-2x todo-checkbox" id="checkBox-${index}"></i>
-                <input type="checkbox" class="todo-checkbox" id="checkBox-${index}" ${
-    isComplete ? "checked" : ""
-  }> 
-              </label> 
- */

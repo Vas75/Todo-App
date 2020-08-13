@@ -112,14 +112,6 @@ select {
 }
 
 /*todos panel*/
-.todos {
-}
-
-.add-todo-form {
-  display: flex;
-  flex-direction: column;
-}
-
 .todo {
   display: flex;
   justify-content: space-between;
@@ -130,9 +122,17 @@ select {
 }
 
 .todo-upper {
+  display: flex;
+  justify-content: space-evenly;
   margin-bottom: 5px;
   border-radius: 10px;
   background-color: #ee82ee;
+}
+
+.todo-complete > .todo-upper {
+  text-decoration: line-through;
+  background-color: rgba(225, 225, 225, 0.5);
+  color: rgba(50, 50, 50, 0.5);
 }
 
 .todo-description-hidden {
@@ -145,10 +145,27 @@ select {
   align-items: center;
 }
 
-.todo-complete > .todo-upper {
-  text-decoration: line-through;
-  background-color: rgba(225, 225, 225, 0.5);
-  color: rgba(50, 50, 50, 0.5);
+p.todo-inner-text {
+  display: flex;
+  word-break: break-all;
+  margin-right: 2px;
+}
+
+div.todo-high-priority {
+  background-color: red;
+}
+
+div.todo-medium-priority {
+  background-color: purple;
+}
+
+div.todo-low-priority {
+  background-color: blue;
+}
+
+.add-todo-form {
+  display: flex;
+  flex-direction: column;
 }
 
 div.edit-modal {
