@@ -106,6 +106,7 @@ function handleTodoEvents(targetEl) {
     renderAllTodos(getSelectedProjectsTodos());
     storeProjectsArr("Projects");
   } else if (targetEl.classList.contains("todo-delete-btn")) {
+    console.log("delet icon clicked");
     deleteTodoInstance(todoTitle);
     renderAllTodos(getSelectedProjectsTodos());
     storeProjectsArr("Projects");
@@ -177,7 +178,7 @@ projectsContainer.addEventListener("click", (e) => {
   const el = e.target;
   if (el.classList.contains("projects-div")) {
     handleProjectSelection(el.id);
-  } else if (el.tagName === "BUTTON") {
+  } else if (el.tagName === "svg") {
     handleProjectDeletion(el.dataset.index);
   }
 });
@@ -266,5 +267,3 @@ export {
  *
  * Should have made better use of methods on classes, project instances could have had methods for todo array manipulation?
  */
-
-//getter/setter for dates, add icons, css work.

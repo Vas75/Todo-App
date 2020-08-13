@@ -1,7 +1,7 @@
 export class Todo {
   constructor(title, dueDate, priority, description) {
     this.title = title;
-    this.dueDate = dueDate; //getter/setter here, use date-fns?
+    this.dueDate = dueDate;
     this.priority = priority;
     this.description = description;
     this.isComplete = false;
@@ -36,11 +36,3 @@ export class Todo {
 }
 
 import { formatDistanceToNow } from "date-fns";
-
-/*
-Date picker has the date, date is return from my function and assigned to instance, setter to put date in milliseconds? This is 
-retrieved to render to dom. Getter get the milliseconds, passes it date-fns to format to a string of date, and getter returns
-that to be rendered? When user submit new todo, inside of getFormData() we grab datepicker value as unix timestamp, if not 
-included, value is nan, else milliseconds place on instance, what to do if nan? Handle by the getter? If nan, return some text?
-With setter? think I need to import date-fns here?
-*/

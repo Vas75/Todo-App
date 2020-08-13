@@ -13,10 +13,11 @@ function renderSingleProject(projectName, isSelected, index) {
   const projectDiv = makeProjectDiv(projectName, index);
 
   const classes = isSelected
-    ? ["projects-div", "selected-project"]
-    : ["projects-div"];
+    ? ["projects-div", "clickable", "selected-project"]
+    : ["projects-div", "clickable"];
 
   projectDiv.classList.add(...classes);
+  projectDiv.setAttribute("title", "Click to see this projects todos.");
   projectsContainer.appendChild(projectDiv);
 }
 
@@ -26,10 +27,10 @@ function makeProjectDiv(title, index) {
   div.textContent = title;
 
   function makeDeleteBtn(index) {
-    const deleteBtn = document.createElement("button");
+    const deleteBtn = document.createElement("i");
     deleteBtn.setAttribute("data-index", `${index}`);
-    deleteBtn.setAttribute("type", "button");
-    deleteBtn.textContent = "delete project";
+    deleteBtn.setAttribute("title", "Click to delete this project.");
+    deleteBtn.classList.add(...["far", "fa-trash-alt", "fa-2x"]);
     return deleteBtn;
   }
 
@@ -80,18 +81,18 @@ function makeTodoDiv(todoTitle, isComplete) {
 function getTodoInnerHTML(title, dueDateText, description, isComplete, index) {
   //bottom nested div hidden default, show on click of upper nested div
   return `  
-            <div class="todo todo-upper"> 
-              <button type="button" class="todo-delete-btn">delete</button>
+            <div class="todo todo-upper clickable" title="Click to expand."> 
+              <i class="far fa-trash-alt fa-2x todo-delete-btn" title="Delete todo."></i>
               ${title} (${dueDateText})
               <label for="checkBox-${index}">
-
-                <input type="checkbox" class="todo-checkbox" id="checkBox-${index}" ${
-    isComplete ? "checked" : ""
-  }> 
+              <i class="far fa-check-circle fa-2x todo-checkbox ${
+                isComplete ? "checked" : ""
+              }" id="checkBox-${index}" title="Click to mark done."></i>
               </label> 
             </div>
             <div class="todo todo-description-hidden">
-              <p>${description}</p> <button type="button" class="todo-edit-btn" title="Click to edit todo.">edit todo</button>
+              <p>${description}</p> 
+              <i class="far fa-edit fa-2x todo-edit-btn" title="Click to edit todo."></i>
             </div>            
           `;
 }
@@ -160,3 +161,12 @@ export {
 
 //added logic that changes completed prop on instance when checkbox clicked, then depending on isComplete styleing changed
 //, box checked or unchecked depending on th property
+
+/**
+ * <label for="checkBox-${index}">
+              <i class="far fa-check-circle fa-2x todo-checkbox" id="checkBox-${index}"></i>
+                <input type="checkbox" class="todo-checkbox" id="checkBox-${index}" ${
+    isComplete ? "checked" : ""
+  }> 
+              </label> 
+ */

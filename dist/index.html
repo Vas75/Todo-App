@@ -11,106 +11,108 @@
     <title>Todo App</title>
   </head>
   <body>
-    <header>
-      <h1 class="page-title">What Todo?</h1>
-    </header>
-    <div class="wrapper">
-      <div class="projects">
-        <h2 class="projects-section-title">Projects</h2>
-        <label for="add-project-input">
-          project
-          <input
-            type="text"
-            name="add-project-input"
-            placeholder="project title..."
-            id="add-project-input"
-          />
-        </label>
-        <button class="add-project-btn" id="add-project-btn">
-          add project
-        </button>
-        <div class="projects-container" id="projects-container">
-          <!--projects listed here-->
-        </div>
-      </div>
-
-      <div class="todos">
-        <h2 class="todos-section-title" id="todos-section-title">
-          <span id="project-title-container"></span>
-        </h2>
-
-        <form class="add-todo-form" id="add-todo-form">
-          <label for="todo-title">
-            todo
+    <div class="app-container">
+      <header>
+        <h1 class="page-title">What Todo?</h1>
+      </header>
+      <div class="wrapper">
+        <div class="projects">
+          <h2 class="projects-section-title">Projects</h2>
+          <label for="add-project-input">
+            Project:
             <input
               type="text"
-              name="todo-title"
-              id="todo-title"
-              placeholder="todo title..."
+              name="add-project-input"
+              placeholder="project title..."
+              id="add-project-input"
             />
           </label>
-          <label for="due-date">
-            due
-            <input type="date" name="due-date" id="due-date" />
+          <button class="add-project-btn" id="add-project-btn">
+            add project
+          </button>
+          <div class="projects-container" id="projects-container">
+            <!--projects listed here-->
+          </div>
+        </div>
+
+        <div class="todos">
+          <h2 class="todos-section-title" id="todos-section-title">
+            <span id="project-title-container"></span>
+          </h2>
+
+          <form class="add-todo-form" id="add-todo-form">
+            <label for="todo-title">
+              Todo:
+              <input
+                type="text"
+                name="todo-title"
+                id="todo-title"
+                placeholder="todo title..."
+              />
+            </label>
+            <label for="due-date">
+              Due:
+              <input type="date" name="due-date" id="due-date" />
+            </label>
+            <label for="todo-priority-select">
+              Priority:
+              <select name="todo-priority-select" id="todo-priority-select">
+                <option value="high">high</option>
+                <option value="medium">medium</option>
+                <option value="low">low</option>
+              </select>
+            </label>
+            <label for="todo-text">
+              Notes:
+              <textarea
+                name="todo-text"
+                id="todo-text"
+                cols="30"
+                rows="10"
+              ></textarea>
+            </label>
+            <button type="submit">add todo</button>
+          </form>
+          <div class="todos-container" id="todos-container">
+            <!--todos go here-->
+          </div>
+        </div>
+      </div>
+      <!--edit todo modal, hidden until edit btn clicked-->
+      <div class="edit-modal" id="edit-modal">
+        <form class="edit-todo-form" id="edit-todo-form">
+          <label for="edit-todo-title">
+            title
+            <input type="text" name="edit-todo-title" id="edit-todo-title" />
           </label>
-          <label for="todo-priority-select">
+          <label for="edit-due-date">
+            due
+            <input type="date" name="edit-due-date" id="edit-due-date" />
+          </label>
+          <label for="edit-todo-priority-select">
             priority
-            <select name="todo-priority-select" id="todo-priority-select">
+            <select
+              name="edit-todo-priority-select"
+              id="edit-todo-priority-select"
+            >
               <option value="high">high</option>
               <option value="medium">medium</option>
               <option value="low">low</option>
             </select>
           </label>
-          <label for="todo-text">
+          <label for="edit-todo-text">
             Notes
             <textarea
-              name="todo-text"
-              id="todo-text"
+              name="edit-todo-text"
+              id="edit-todo-text"
               cols="30"
               rows="10"
             ></textarea>
           </label>
-          <button type="submit">add todo</button>
+          <button type="submit">edit todo</button>
+          <button type="button" id="cancel">cancel</button>
         </form>
-        <div class="todos-container" id="todos-container">
-          <!--todos go here-->
-        </div>
       </div>
-    </div>
-    <!--edit todo modal, hidden until edit btn clicked-->
-    <div class="edit-modal" id="edit-modal">
-      <form class="edit-todo-form" id="edit-todo-form">
-        <label for="edit-todo-title">
-          title
-          <input type="text" name="edit-todo-title" id="edit-todo-title" />
-        </label>
-        <label for="edit-due-date">
-          due
-          <input type="date" name="edit-due-date" id="edit-due-date" />
-        </label>
-        <label for="edit-todo-priority-select">
-          priority
-          <select
-            name="edit-todo-priority-select"
-            id="edit-todo-priority-select"
-          >
-            <option value="high">high</option>
-            <option value="medium">medium</option>
-            <option value="low">low</option>
-          </select>
-        </label>
-        <label for="edit-todo-text">
-          Notes
-          <textarea
-            name="edit-todo-text"
-            id="edit-todo-text"
-            cols="30"
-            rows="10"
-          ></textarea>
-        </label>
-        <button type="submit">edit todo</button>
-        <button type="button" id="cancel">cancel</button>
-      </form>
     </div>
 
     <script src="main.js"></script>
