@@ -19,12 +19,12 @@ export class Todo {
     if (this.dueDate) {
       const parsedDateArr = this.parseDate(this.dueDate);
       const whenDue = new Date(...parsedDateArr);
-      return `due: ${formatDistanceToNow(whenDue, { addSuffix: true })}`;
+      return `${format(whenDue, "MMM do, yyyy")}`;
     } else {
       return "No due date.";
     }
   }
-
+  //needed to format date from datepicker, so new Date, and date-fns return correct date/time.
   parseDate(date) {
     return date.split("-").map((part, index) => {
       if (index === 1) {
@@ -35,4 +35,4 @@ export class Todo {
   }
 }
 
-import { formatDistanceToNow } from "date-fns";
+import { format } from "date-fns";

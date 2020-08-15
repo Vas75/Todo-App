@@ -56,7 +56,7 @@ function renderAllTodos(todosArr) {
     const { title, description, isComplete, priority } = todo;
     const dueDateText = todo.dueDateText;
 
-    const todoDiv = makeTodoDiv(title, isComplete, priority);
+    const todoDiv = makeTodoDiv(title, isComplete);
     todoDiv.innerHTML = getTodoInnerHTML(
       title,
       dueDateText,
