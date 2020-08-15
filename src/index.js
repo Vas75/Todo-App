@@ -238,16 +238,3 @@ export {
   editTodoForm,
   projectTitleHeading,
 };
-
-/**
-/**
- * Should i have handler functions call functions, and they return values, then call next function in a looping pattern?
- * Im going to rememeber this, maybe a step in the right direction.
- */
-
-/**
- * Note: could have created a function that looped through array of project obj, and then looped through object,
- * then looped through array of todos, may have been useful.
- *
- * Should have made better use of methods on classes, project instances could have had methods for todo array manipulation?
- */

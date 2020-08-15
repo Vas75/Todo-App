@@ -24,7 +24,7 @@ export class Todo {
       return "No due date.";
     }
   }
-  //needed to format date from datepicker, so new Date, and date-fns return correct date/time.
+  //needed to format date from datepicker, so new Date, and date-fns return correct date.
   parseDate(date) {
     return date.split("-").map((part, index) => {
       if (index === 1) {
