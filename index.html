@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/d6cbb0e3a3.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="style.css" />
+    <title>Todo App</title>
+  </head>
+  <body>
+    <div class="app-container">
+      <header>
+        <h1 class="page-title">What Todo?</h1>
+      </header>
+      <div class="wrapper">
+        <div class="projects">
+          <h2 class="projects-section-title">Projects</h2>
+          <label for="add-project-input">
+            Project:
+            <input
+              type="text"
+              name="add-project-input"
+              placeholder="project title..."
+              id="add-project-input"
+              maxlength="50"
+            />
+          </label>
+          <button class="add-project-btn" id="add-project-btn">
+            add project
+          </button>
+          <div class="projects-container" id="projects-container">
+            <!--projects listed here-->
+          </div>
+        </div>
+
+        <div class="todos">
+          <h2 class="todos-section-title" id="todos-section-title">
+            <span id="project-title-container"></span>
+          </h2>
+
+          <form class="add-todo-form" id="add-todo-form">
+            <label for="todo-title">
+              Todo:
+              <input
+                type="text"
+                name="todo-title"
+                id="todo-title"
+                maxlength="50"
+                placeholder="todo title..."
+              />
+            </label>
+            <label for="due-date">
+              Due:
+              <input type="date" name="due-date" id="due-date" />
+            </label>
+            <label for="todo-priority-select">
+              Priority:
+              <select name="todo-priority-select" id="todo-priority-select">
+                <option value="low">low (blue)</option>
+                <option value="medium">medium (purple)</option>
+                <option value="high">high (red)</option>
+              </select>
+            </label>
+            <label for="todo-text">
+              Notes:
+              <textarea
+                name="todo-text"
+                id="todo-text"
+                cols="30"
+                rows="10"
+              ></textarea>
+            </label>
+            <button type="submit">add todo</button>
+          </form>
+          <div class="todos-container" id="todos-container">
+            <!--todos go here-->
+          </div>
+        </div>
+      </div>
+      <!--edit todo modal, hidden until edit btn clicked-->
+      <div class="edit-modal" id="edit-modal">
+        <form class="edit-todo-form" id="edit-todo-form">
+          <label for="edit-todo-title">
+            title
+            <input
+              type="text"
+              name="edit-todo-title"
+              id="edit-todo-title"
+              maxlength="50"
+            />
+          </label>
+          <label for="edit-due-date">
+            due
+            <input type="date" name="edit-due-date" id="edit-due-date" />
+          </label>
+          <label for="edit-todo-priority-select">
+            priority
+            <select
+              name="edit-todo-priority-select"
+              id="edit-todo-priority-select"
+            >
+              <option value="low">low (blue)</option>
+              <option value="medium">medium (purple)</option>
+              <option value="high">high (red)</option>
+            </select>
+          </label>
+          <label for="edit-todo-text">
+            Notes
+            <textarea
+              name="edit-todo-text"
+              id="edit-todo-text"
+              cols="30"
+              rows="10"
+            ></textarea>
+          </label>
+          <button type="submit">edit todo</button>
+          <button type="button" id="cancel">cancel</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>
