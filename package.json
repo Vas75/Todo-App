@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/Vas75/Todo-App/issues"
   },
-  "homepage": "https://Vas75.github.io/Todo-App",
+  "homepage": "https://vas75.github.io/Todo-App",
   "devDependencies": {
     "webpack": "^4.44.0",
     "webpack-cli": "^3.3.12"
